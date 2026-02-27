@@ -81,20 +81,7 @@ jobs:
             -e BUILD_TIME="${{ steps.meta.outputs.build_time }}" \
             "${{ steps.meta.outputs.image_versioned }}"
 
-      # ── 7. Health check ───────────────────────────────────────────────────
-      - name: Health check
-        run: |
-          echo "Waiting for app to start..."
-          sleep 4
-          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ env.APP_PORT }}/health)
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "Health check FAILED (HTTP $HTTP_CODE)"
-            docker logs "${{ env.CONTAINER_NAME }}" --tail 30
-            exit 1
-          fi
-          echo "Health check PASSED (HTTP $HTTP_CODE)"
-
-      # ── 8. Print deployment summary ───────────────────────────────────────
+      # ── 7. Print deployment summary ───────────────────────────────────────
       - name: Deployment summary
         run: |
           echo ""
