@@ -29,7 +29,7 @@ jobs:
       - name: Set build metadata
         id: meta
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          VERSION=$(python3 -c "import json; print(json.load(open('package.json'))['version'])")
           BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           SHORT_SHA="${GITHUB_SHA::7}"
 
