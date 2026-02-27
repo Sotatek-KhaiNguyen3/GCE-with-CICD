@@ -44,12 +44,9 @@ jobs:
           echo "gar_host=${GAR_HOST}"                     >> "$GITHUB_OUTPUT"
 
       # ── 3. Auth Docker → Artifact Registry ──────────────────────────────
-      # Dùng access token từ GCE service account để login trực tiếp vào Docker
       - name: Authenticate Docker to Artifact Registry
         run: |
-          gcloud auth print-access-token | \
-            docker login -u oauth2accesstoken --password-stdin \
-            "https://${{ steps.meta.outputs.gar_host }}"
+          gcloud auth configure-docker ${{ vars.GAR_LOCATION }}-docker.pkg.dev --quiet
 
       # ── 4. Build ─────────────────────────────────────────────────────────
       - name: Build Docker image
